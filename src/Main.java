@@ -26,7 +26,7 @@ public class Main {
             System.out.println("5. Update Expense");
             System.out.println("6. Calculate Total Expenses");
             System.out.println("7. Filter by Category");
-            System.out.println("8. Sort by Amount (Ascending)");
+            System.out.println("8. Sort Expenses");
             System.out.println("9. Exit");
             System.out.print("Enter your choice: ");
 
@@ -252,12 +252,34 @@ public class Main {
                         break;
                     }
 
-                    Collections.sort(expenses,
-                            (e1, e2) -> Double.compare(e1.getAmount(), e2.getAmount()));
+                    System.out.println("\n===== Sort Expenses =====");
+                    System.out.println("1. Amount (Ascending)");
+                    System.out.println("2. Amount (Descending)");
+                    System.out.print("Enter your choice: ");
 
-                    System.out.println("\nExpenses sorted successfully!");
+                    int sortChoice = sc.nextInt();
 
-                    System.out.println("\n===== Expenses (Ascending by Amount) =====");
+                    if (sortChoice == 1) {
+
+                        Collections.sort(expenses,
+                                (e1, e2) -> Double.compare(e1.getAmount(), e2.getAmount()));
+
+                        System.out.println("\nExpenses sorted in ascending order.");
+
+                    } else if (sortChoice == 2) {
+
+                        Collections.sort(expenses,
+                                (e1, e2) -> Double.compare(e2.getAmount(), e1.getAmount()));
+
+                        System.out.println("\nExpenses sorted in descending order.");
+
+                    } else {
+
+                        System.out.println("\nInvalid choice!");
+                        break;
+                    }
+
+                    System.out.println("\n===== Expense List =====");
 
                     for (Expense exp : expenses) {
                         System.out.println(exp);
@@ -265,7 +287,6 @@ public class Main {
                     }
 
                     break;
-
                 case 9:
 
                     running = false;
