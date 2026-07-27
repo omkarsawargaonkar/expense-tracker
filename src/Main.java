@@ -27,7 +27,9 @@ public class Main {
             System.out.println("6. Calculate Total Expenses");
             System.out.println("7. Filter by Category");
             System.out.println("8. Sort Expenses");
-            System.out.println("9. Exit");
+            System.out.println("9. Highest Expense");
+            System.out.println("10. Lowest Expense");
+            System.out.println("11. Exit");
             System.out.print("Enter your choice: ");
 
             int choice = sc.nextInt();
@@ -287,7 +289,50 @@ public class Main {
                     }
 
                     break;
+
                 case 9:
+
+                    if (expenses.isEmpty()) {
+                        System.out.println("\nNo expenses found.");
+                        break;
+                    }
+
+                    Expense highest = expenses.get(0);
+
+                    for (Expense exp : expenses) {
+
+                        if (exp.getAmount() > highest.getAmount()) {
+                            highest = exp;
+                        }
+                    }
+
+                    System.out.println("\n===== Highest Expense =====");
+                    System.out.println(highest);
+
+                    break;
+
+                case 10:
+
+                    if (expenses.isEmpty()) {
+                        System.out.println("\nNo expenses found.");
+                        break;
+                    }
+
+                    Expense lowest = expenses.get(0);
+
+                    for (Expense exp : expenses) {
+
+                        if (exp.getAmount() < lowest.getAmount()) {
+                            lowest = exp;
+                        }
+                    }
+
+                    System.out.println("\n===== Lowest Expense =====");
+                    System.out.println(lowest);
+
+                    break;
+
+                case 11:
 
                     running = false;
                     System.out.println("\nThank you for using Expense Tracker!");
