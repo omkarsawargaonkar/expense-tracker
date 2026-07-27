@@ -24,7 +24,8 @@ public class Main {
             System.out.println("4. Search Expense");
             System.out.println("5. Update Expense");
             System.out.println("6. Calculate Total Expenses");
-            System.out.println("7. Exit");
+            System.out.println("7. Filter by Category");
+            System.out.println("8. Exit");
             System.out.print("Enter your choice: ");
 
             int choice = sc.nextInt();
@@ -211,6 +212,38 @@ public class Main {
                     break;
 
                 case 7:
+
+                    if (expenses.isEmpty()) {
+                        System.out.println("\nNo expenses found.");
+                        break;
+                    }
+
+                    sc.nextLine();
+
+                    System.out.print("Enter Category: ");
+                    String searchCategory = sc.nextLine();
+
+                    found = false;
+
+                    System.out.println("\n===== Matching Expenses =====");
+
+                    for (Expense exp : expenses) {
+
+                        if (exp.getCategory().equalsIgnoreCase(searchCategory)) {
+
+                            System.out.println(exp);
+                            System.out.println("------------------------");
+                            found = true;
+                        }
+                    }
+
+                    if (!found) {
+                        System.out.println("\nNo expenses found in this category.");
+                    }
+
+                    break;
+
+                case 8:
 
                     running = false;
                     System.out.println("\nThank you for using Expense Tracker!");
