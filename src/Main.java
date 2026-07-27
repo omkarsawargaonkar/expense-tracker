@@ -1,6 +1,7 @@
 import model.Expense;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class Main {
@@ -25,7 +26,8 @@ public class Main {
             System.out.println("5. Update Expense");
             System.out.println("6. Calculate Total Expenses");
             System.out.println("7. Filter by Category");
-            System.out.println("8. Exit");
+            System.out.println("8. Sort by Amount (Ascending)");
+            System.out.println("9. Exit");
             System.out.print("Enter your choice: ");
 
             int choice = sc.nextInt();
@@ -244,6 +246,27 @@ public class Main {
                     break;
 
                 case 8:
+
+                    if (expenses.isEmpty()) {
+                        System.out.println("\nNo expenses found.");
+                        break;
+                    }
+
+                    Collections.sort(expenses,
+                            (e1, e2) -> Double.compare(e1.getAmount(), e2.getAmount()));
+
+                    System.out.println("\nExpenses sorted successfully!");
+
+                    System.out.println("\n===== Expenses (Ascending by Amount) =====");
+
+                    for (Expense exp : expenses) {
+                        System.out.println(exp);
+                        System.out.println("------------------------");
+                    }
+
+                    break;
+
+                case 9:
 
                     running = false;
                     System.out.println("\nThank you for using Expense Tracker!");
