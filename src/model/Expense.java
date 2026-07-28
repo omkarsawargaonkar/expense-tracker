@@ -1,12 +1,14 @@
 package model;
 
+import java.time.LocalDate;
+
 public class Expense {
 
     private int id;
     private String title;
     private String category;
     private double amount;
-    private String expenseDate;
+    private LocalDate expenseDate;
 
     // Default Constructor
     public Expense() {
@@ -14,7 +16,7 @@ public class Expense {
     }
 
     // Parameterized Constructor
-    public Expense(int id, String title, String category, double amount, String expenseDate) {
+    public Expense(int id, String title, String category, double amount, LocalDate expenseDate) {
         this.id = id;
         this.title = title;
         this.category = category;
@@ -40,7 +42,7 @@ public class Expense {
         return amount;
     }
 
-    public String getExpenseDate() {
+    public LocalDate getExpenseDate() {
         return expenseDate;
     }
 
@@ -58,7 +60,7 @@ public class Expense {
         this.amount = amount;
     }
 
-    public void setExpenseDate(String expenseDate) {
+    public void setExpenseDate(LocalDate expenseDate) {
         this.expenseDate = expenseDate;
     }
 

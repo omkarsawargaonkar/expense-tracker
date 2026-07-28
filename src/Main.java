@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 import model.Expense;
 
@@ -109,8 +111,29 @@ public class Main {
 
                     // ---------------- Date ----------------
 
-                    System.out.print("Enter Date (YYYY-MM-DD): ");
-                    String expenseDate = sc.nextLine().trim();
+                    // ---------------- Date Validation ----------------
+
+                    boolean validDate = false;
+                    LocalDate expenseDate = null;
+
+                    while (!validDate) {
+
+                        try {
+
+                            System.out.print("Enter Date (YYYY-MM-DD): ");
+                            String input = sc.nextLine().trim();
+
+                            expenseDate = LocalDate.parse(input);
+
+                            validDate = true;
+
+                        } catch (DateTimeParseException e) {
+
+                            System.out.println("Invalid date! Please enter the date in YYYY-MM-DD format.");
+
+                        }
+
+                    }
 
                     // ---------------- Create Expense ----------------
 
@@ -229,7 +252,7 @@ public class Main {
                             sc.nextLine();
 
                             System.out.print("Enter New Date (YYYY-MM-DD): ");
-                            String newDate = sc.nextLine();
+                            LocalDate newDate = LocalDate.parse(sc.nextLine().trim());
 
                             exp.setTitle(newTitle);
                             exp.setCategory(newCategory);
