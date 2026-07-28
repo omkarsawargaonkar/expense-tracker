@@ -1,8 +1,9 @@
-import model.Expense;
-
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.InputMismatchException;
 import java.util.Scanner;
+
+import model.Expense;
 
 public class Main {
 
@@ -33,43 +34,93 @@ public class Main {
             System.out.print("Enter your choice: ");
 
             int choice = sc.nextInt();
+            sc.nextLine();
 
             switch (choice) {
 
                 case 1:
 
-                    sc.nextLine();
-
-                    System.out.print("Enter Title: ");
-                    String title = sc.nextLine();
-
-                    System.out.print("Enter Category: ");
-                    String category = sc.nextLine();
-
-                    System.out.print("Enter Amount: ");
-                    double amount = sc.nextDouble();
-
-                    sc.nextLine();
-
-                    System.out.print("Enter Date (YYYY-MM-DD): ");
-                    String date = sc.nextLine();
-
                     int id = nextId;
                     nextId++;
 
-                    Expense expense = new Expense(
-                            id,
-                            title,
-                            category,
-                            amount,
-                            date
-                    );
+                    // ---------------- Title Validation ----------------
+
+                    boolean validTitle = false;
+                    String title = "";
+
+                    while (!validTitle) {
+
+                        System.out.print("Enter Title: ");
+                        title = sc.nextLine().trim();
+
+                        if (title.isEmpty()) {
+                            System.out.println("Title cannot be empty.");
+                        } else {
+                            validTitle = true;
+                        }
+                    }
+
+                    // ---------------- Category Validation ----------------
+
+                    boolean validCategory = false;
+                    String category = "";
+
+                    while (!validCategory) {
+
+                        System.out.print("Enter Category: ");
+                        category = sc.nextLine().trim();
+
+                        if (category.isEmpty()) {
+                            System.out.println("Category cannot be empty.");
+                        } else {
+                            validCategory = true;
+                        }
+                    }
+
+                    // ---------------- Amount Validation ----------------
+
+                    boolean validAmount = false;
+                    double amount = 0;
+
+                    while (!validAmount) {
+
+                        try {
+
+                            System.out.print("Enter Amount: ");
+                            amount = sc.nextDouble();
+
+                            if (amount < 0) {
+                                System.out.println("Amount cannot be negative.");
+                            } else {
+                                validAmount = true;
+                            }
+
+                        } catch (InputMismatchException e) {
+
+                            System.out.println("Invalid number! Please enter a numeric value.");
+                            sc.next();
+                            continue;
+
+                        }
+
+                    }
+
+                    sc.nextLine(); // Consume leftover newline
+
+                    // ---------------- Date ----------------
+
+                    System.out.print("Enter Date (YYYY-MM-DD): ");
+                    String expenseDate = sc.nextLine().trim();
+
+                    // ---------------- Create Expense ----------------
+
+                    Expense expense = new Expense(id, title, category, amount, expenseDate);
 
                     expenses.add(expense);
 
-                    System.out.println("\nExpense added successfully!");
-                    break;
+                    System.out.println("\nExpense Added Successfully!");
 
+                    break;
                 case 2:
 
                     if (expenses.isEmpty()) {
