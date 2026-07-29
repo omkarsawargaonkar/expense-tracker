@@ -47,93 +47,22 @@ public class Main {
 
                     // ---------------- Title Validation ----------------
 
-                    boolean validTitle = false;
-                    String title = "";
-
-                    while (!validTitle) {
-
-                        System.out.print("Enter Title: ");
-                        title = sc.nextLine().trim();
-
-                        if (title.isEmpty()) {
-                            System.out.println("Title cannot be empty.");
-                        } else {
-                            validTitle = true;
-                        }
-                    }
+                    String title = getValidText(sc, "Title");
 
                     // ---------------- Category Validation ----------------
 
-                    boolean validCategory = false;
-                    String category = "";
-
-                    while (!validCategory) {
-
-                        System.out.print("Enter Category: ");
-                        category = sc.nextLine().trim();
-
-                        if (category.isEmpty()) {
-                            System.out.println("Category cannot be empty.");
-                        } else {
-                            validCategory = true;
-                        }
-                    }
+                    String category = getValidText(sc, "Category");
 
                     // ---------------- Amount Validation ----------------
 
-                    boolean validAmount = false;
-                    double amount = 0;
-
-                    while (!validAmount) {
-
-                        try {
-
-                            System.out.print("Enter Amount: ");
-                            amount = sc.nextDouble();
-
-                            if (amount < 0) {
-                                System.out.println("Amount cannot be negative.");
-                            } else {
-                                validAmount = true;
-                            }
-
-                        } catch (InputMismatchException e) {
-
-                            System.out.println("Invalid number! Please enter a numeric value.");
-                            sc.next();
-                            continue;
-
-                        }
-
-                    }
-
-                    sc.nextLine(); // Consume leftover newline
+                    double amount = getValidAmount(sc);
+                     // Consume leftover newline
 
                     // ---------------- Date ----------------
 
                     // ---------------- Date Validation ----------------
 
-                    boolean validDate = false;
-                    LocalDate expenseDate = null;
-
-                    while (!validDate) {
-
-                        try {
-
-                            System.out.print("Enter Date (YYYY-MM-DD): ");
-                            String input = sc.nextLine().trim();
-
-                            expenseDate = LocalDate.parse(input);
-
-                            validDate = true;
-
-                        } catch (DateTimeParseException e) {
-
-                            System.out.println("Invalid date! Please enter the date in YYYY-MM-DD format.");
-
-                        }
-
-                    }
+                    LocalDate expenseDate = getValidDate(sc);
 
                     // ---------------- Create Expense ----------------
 
@@ -419,5 +348,70 @@ public class Main {
         }
 
         sc.close();
+    }
+
+    public static String getValidText(Scanner sc, String fieldName) {
+
+        while (true) {
+
+            System.out.print("Enter " + fieldName + ": ");
+            String input = sc.nextLine().trim();
+
+            if (input.isEmpty()) {
+                System.out.println(fieldName + " cannot be empty.");
+            } else {
+                return input;
+            }
+
+        }
+
+    }
+
+    public static double getValidAmount(Scanner sc) {
+
+        while (true) {
+
+            try {
+
+                System.out.print("Enter Amount: ");
+                double amount = sc.nextDouble();
+
+                if (amount < 0) {
+                    System.out.println("Amount cannot be negative.");
+                } else {
+                    sc.nextLine();   // Consume newline
+                    return amount;
+                }
+
+            } catch (InputMismatchException e) {
+
+                System.out.println("Invalid amount! Please enter a valid number.");
+                sc.next(); // Remove invalid input
+
+            }
+
+        }
+
+    }
+
+    public static LocalDate getValidDate(Scanner sc) {
+
+        while (true) {
+
+            try {
+
+                System.out.print("Enter Date (YYYY-MM-DD): ");
+                String input = sc.nextLine().trim();
+
+                return LocalDate.parse(input);
+
+            } catch (DateTimeParseException e) {
+
+                System.out.println("Invalid date! Please enter the date in YYYY-MM-DD format.");
+
+            }
+
+        }
+
     }
 }
