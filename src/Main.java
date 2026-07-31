@@ -1,9 +1,8 @@
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import dao.ExpenseDAO;
 
 import model.Expense;
 
@@ -12,10 +11,10 @@ public class Main {
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
-        ArrayList<Expense> expenses = new ArrayList<>();
+        ExpenseDAO expenseDAO = new ExpenseDAO();
 
         boolean running = true;
-        int nextId = 1;
+
 
         while (running) {
 
@@ -42,8 +41,7 @@ public class Main {
 
                 case 1:
 
-                    int id = nextId;
-                    nextId++;
+
 
                     // ---------------- Title Validation ----------------
 
@@ -66,272 +64,105 @@ public class Main {
 
                     // ---------------- Create Expense ----------------
 
-                    Expense expense = new Expense(id, title, category, amount, expenseDate);
+                    Expense expense = new Expense(title, category, amount, expenseDate);
 
-                    expenses.add(expense);
-
-                    System.out.println("\nExpense Added Successfully!");
+                    expenseDAO.addExpense(expense);
 
                     break;
+
                 case 2:
 
-                    if (expenses.isEmpty()) {
-                        System.out.println("\nNo expenses found.");
-                    } else {
-
-                        System.out.println("\n===== Expense List =====");
-
-                        for (Expense e : expenses) {
-                            System.out.println(e);
-                            System.out.println("------------------------");
-                        }
-                    }
+                    expenseDAO.viewExpenses();
 
                     break;
 
                 case 3:
 
-                    if (expenses.isEmpty()) {
-                        System.out.println("\nNo expenses found.");
-                        break;
-                    }
-
                     System.out.print("Enter Expense ID to delete: ");
                     int idToDelete = sc.nextInt();
 
-                    boolean found = false;
-
-                    for (int i = 0; i < expenses.size(); i++) {
-
-                        if (expenses.get(i).getId() == idToDelete) {
-
-                            expenses.remove(i);
-                            System.out.println("\nExpense deleted successfully!");
-                            found = true;
-                            break;
-                        }
-                    }
-
-                    if (!found) {
-                        System.out.println("\nExpense not found.");
-                    }
+                    expenseDAO.deleteExpense(idToDelete);
 
                     break;
 
                 case 4:
 
-                    if (expenses.isEmpty()) {
-                        System.out.println("\nNo expenses found.");
-                        break;
-                    }
-
                     System.out.print("Enter Expense ID to search: ");
                     int idToSearch = sc.nextInt();
 
-                    found = false;
-
-                    for (int i = 0; i < expenses.size(); i++) {
-
-                        if (expenses.get(i).getId() == idToSearch) {
-
-                            System.out.println("\nExpense Found:");
-                            System.out.println(expenses.get(i));
-                            found = true;
-                            break;
-                        }
-                    }
-
-                    if (!found) {
-                        System.out.println("\nExpense not found.");
-                    }
+                    expenseDAO.searchExpense(idToSearch);
 
                     break;
 
                 case 5:
 
-                    if (expenses.isEmpty()) {
-                        System.out.println("\nNo expenses found.");
-                        break;
-                    }
-
                     System.out.print("Enter Expense ID to update: ");
                     int idToUpdate = sc.nextInt();
                     sc.nextLine();
 
-                    found = false;
+                    String newTitle = getValidText(sc, "New Title");
 
-                    for (int i = 0; i < expenses.size(); i++) {
+                    String newCategory = getValidText(sc, "New Category");
 
-                        if (expenses.get(i).getId() == idToUpdate) {
+                    double newAmount = getValidAmount(sc);
 
-                            Expense exp = expenses.get(i);
+                    LocalDate newDate = getValidDate(sc);
 
-                            System.out.println("\nCurrent Expense:");
-                            System.out.println(exp);
+                    Expense updatedExpense = new Expense(
+                            idToUpdate,
+                            newTitle,
+                            newCategory,
+                            newAmount,
+                            newDate
+                    );
 
-                            System.out.print("Enter New Title: ");
-                            String newTitle = sc.nextLine();
-
-                            System.out.print("Enter New Category: ");
-                            String newCategory = sc.nextLine();
-
-                            System.out.print("Enter New Amount: ");
-                            double newAmount = sc.nextDouble();
-
-                            sc.nextLine();
-
-                            System.out.print("Enter New Date (YYYY-MM-DD): ");
-                            LocalDate newDate = LocalDate.parse(sc.nextLine().trim());
-
-                            exp.setTitle(newTitle);
-                            exp.setCategory(newCategory);
-                            exp.setAmount(newAmount);
-                            exp.setExpenseDate(newDate);
-
-                            System.out.println("\nExpense updated successfully!");
-                            found = true;
-                            break;
-                        }
-                    }
-
-                    if (!found) {
-                        System.out.println("\nExpense not found.");
-                    }
+                    expenseDAO.updateExpense(updatedExpense);
 
                     break;
 
                 case 6:
 
-                    if (expenses.isEmpty()) {
-                        System.out.println("\nNo expenses found.");
-                    } else {
-
-                        double total = 0;
-
-                        for (Expense exp : expenses) {
-                            total += exp.getAmount();
-                        }
-
-                        System.out.println("\n===== Total Expenses =====");
-                        System.out.println("Total Amount: " + total);
-                    }
+                    expenseDAO.getTotalExpenses();
 
                     break;
 
                 case 7:
 
-                    if (expenses.isEmpty()) {
-                        System.out.println("\nNo expenses found.");
-                        break;
-                    }
-
-                    sc.nextLine();
+                    sc.nextLine(); // consume leftover newline
 
                     System.out.print("Enter Category: ");
-                    String searchCategory = sc.nextLine();
+                    String filterCategory = sc.nextLine();
 
-                    found = false;
-
-                    System.out.println("\n===== Matching Expenses =====");
-
-                    for (Expense exp : expenses) {
-
-                        if (exp.getCategory().equalsIgnoreCase(searchCategory)) {
-
-                            System.out.println(exp);
-                            System.out.println("------------------------");
-                            found = true;
-                        }
-                    }
-
-                    if (!found) {
-                        System.out.println("\nNo expenses found in this category.");
-                    }
+                    expenseDAO.filterByCategory(filterCategory);
 
                     break;
 
+
                 case 8:
 
-                    if (expenses.isEmpty()) {
-                        System.out.println("\nNo expenses found.");
-                        break;
-                    }
-
-                    System.out.println("\n===== Sort Expenses =====");
-                    System.out.println("1. Amount (Ascending)");
-                    System.out.println("2. Amount (Descending)");
+                    System.out.println("\n1. Ascending");
+                    System.out.println("2. Descending");
                     System.out.print("Enter your choice: ");
 
                     int sortChoice = sc.nextInt();
 
-                    if (sortChoice == 1) {
-
-                        Collections.sort(expenses,
-                                (e1, e2) -> Double.compare(e1.getAmount(), e2.getAmount()));
-
-                        System.out.println("\nExpenses sorted in ascending order.");
-
-                    } else if (sortChoice == 2) {
-
-                        Collections.sort(expenses,
-                                (e1, e2) -> Double.compare(e2.getAmount(), e1.getAmount()));
-
-                        System.out.println("\nExpenses sorted in descending order.");
-
+                    if (sortChoice == 1 || sortChoice == 2) {
+                        expenseDAO.sortExpenses(sortChoice);
                     } else {
-
-                        System.out.println("\nInvalid choice!");
-                        break;
-                    }
-
-                    System.out.println("\n===== Expense List =====");
-
-                    for (Expense exp : expenses) {
-                        System.out.println(exp);
-                        System.out.println("------------------------");
+                        System.out.println("Invalid Choice!");
                     }
 
                     break;
 
+
                 case 9:
 
-                    if (expenses.isEmpty()) {
-                        System.out.println("\nNo expenses found.");
-                        break;
-                    }
-
-                    Expense highest = expenses.get(0);
-
-                    for (Expense exp : expenses) {
-
-                        if (exp.getAmount() > highest.getAmount()) {
-                            highest = exp;
-                        }
-                    }
-
-                    System.out.println("\n===== Highest Expense =====");
-                    System.out.println(highest);
-
+                    expenseDAO.highestExpense();
                     break;
 
                 case 10:
 
-                    if (expenses.isEmpty()) {
-                        System.out.println("\nNo expenses found.");
-                        break;
-                    }
-
-                    Expense lowest = expenses.get(0);
-
-                    for (Expense exp : expenses) {
-
-                        if (exp.getAmount() < lowest.getAmount()) {
-                            lowest = exp;
-                        }
-                    }
-
-                    System.out.println("\n===== Lowest Expense =====");
-                    System.out.println(lowest);
+                    expenseDAO.lowestExpense();
 
                     break;
 

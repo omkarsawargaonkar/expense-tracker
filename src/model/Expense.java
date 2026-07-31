@@ -24,6 +24,13 @@ public class Expense {
         this.expenseDate = expenseDate;
     }
 
+    public Expense(String title, String category, double amount, LocalDate expenseDate) {
+        this.title = title;
+        this.category = category;
+        this.amount = amount;
+        this.expenseDate = expenseDate;
+    }
+
     // Getters
 
     public int getId() {
@@ -47,6 +54,10 @@ public class Expense {
     }
 
     // Setters
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public void setTitle(String title) {
         this.title = title;
