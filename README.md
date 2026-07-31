@@ -211,8 +211,5 @@ Computer Engineering Graduate
 - GitHub: https://github.com/omkarsawargaonkar
 - LinkedIn: https://www.linkedin.com/in/omkar-sawargaonkar-569722289/
 
----
 
-## License
 
-This project is licensed under the MIT License.
