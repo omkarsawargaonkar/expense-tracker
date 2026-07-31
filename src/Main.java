@@ -3,6 +3,7 @@ import java.util.Scanner;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import dao.ExpenseDAO;
+import util.InputValidator;
 
 import model.Expense;
 
@@ -45,22 +46,22 @@ public class Main {
 
                     // ---------------- Title Validation ----------------
 
-                    String title = getValidText(sc, "Title");
+                    String title = InputValidator.getValidText(sc, "Title");
 
                     // ---------------- Category Validation ----------------
 
-                    String category = getValidText(sc, "Category");
+                    String category = InputValidator.getValidText(sc, "Category");
 
                     // ---------------- Amount Validation ----------------
 
-                    double amount = getValidAmount(sc);
+                    double amount = InputValidator.getValidAmount(sc);
                      // Consume leftover newline
 
                     // ---------------- Date ----------------
 
                     // ---------------- Date Validation ----------------
 
-                    LocalDate expenseDate = getValidDate(sc);
+                    LocalDate expenseDate = InputValidator.getValidDate(sc);
 
                     // ---------------- Create Expense ----------------
 
@@ -100,13 +101,10 @@ public class Main {
                     int idToUpdate = sc.nextInt();
                     sc.nextLine();
 
-                    String newTitle = getValidText(sc, "New Title");
-
-                    String newCategory = getValidText(sc, "New Category");
-
-                    double newAmount = getValidAmount(sc);
-
-                    LocalDate newDate = getValidDate(sc);
+                    String newTitle = InputValidator.getValidText(sc, "New Title");
+                    String newCategory = InputValidator.getValidText(sc, "New Category");
+                    double newAmount = InputValidator.getValidAmount(sc);
+                    LocalDate newDate = InputValidator.getValidDate(sc);
 
                     Expense updatedExpense = new Expense(
                             idToUpdate,
@@ -127,8 +125,6 @@ public class Main {
                     break;
 
                 case 7:
-
-                    sc.nextLine(); // consume leftover newline
 
                     System.out.print("Enter Category: ");
                     String filterCategory = sc.nextLine();
@@ -181,68 +177,5 @@ public class Main {
         sc.close();
     }
 
-    public static String getValidText(Scanner sc, String fieldName) {
 
-        while (true) {
-
-            System.out.print("Enter " + fieldName + ": ");
-            String input = sc.nextLine().trim();
-
-            if (input.isEmpty()) {
-                System.out.println(fieldName + " cannot be empty.");
-            } else {
-                return input;
-            }
-
-        }
-
-    }
-
-    public static double getValidAmount(Scanner sc) {
-
-        while (true) {
-
-            try {
-
-                System.out.print("Enter Amount: ");
-                double amount = sc.nextDouble();
-
-                if (amount < 0) {
-                    System.out.println("Amount cannot be negative.");
-                } else {
-                    sc.nextLine();   // Consume newline
-                    return amount;
-                }
-
-            } catch (InputMismatchException e) {
-
-                System.out.println("Invalid amount! Please enter a valid number.");
-                sc.next(); // Remove invalid input
-
-            }
-
-        }
-
-    }
-
-    public static LocalDate getValidDate(Scanner sc) {
-
-        while (true) {
-
-            try {
-
-                System.out.print("Enter Date (YYYY-MM-DD): ");
-                String input = sc.nextLine().trim();
-
-                return LocalDate.parse(input);
-
-            } catch (DateTimeParseException e) {
-
-                System.out.println("Invalid date! Please enter the date in YYYY-MM-DD format.");
-
-            }
-
-        }
-
-    }
 }
