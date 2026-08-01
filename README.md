@@ -209,7 +209,7 @@ This project helped me strengthen my understanding of:
 Computer Engineering Graduate
 
 - GitHub: https://github.com/omkarsawargaonkar
-- LinkedIn: https://www.linkedin.com/in/omkar-sawargaonkar-569722289/
+- LinkedIn: https://www.linkedin.com/in/omkarsawargaonkar/
 
 
 
